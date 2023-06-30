@@ -1,7 +1,8 @@
 <script setup>
 import { reactive, computed } from 'vue'
+import Routine from '@/components/Routine.vue'
 
-const todos = reactive([
+const routines = reactive([
   {
     time: 'morning',
     tasks: [
@@ -25,35 +26,31 @@ const todos = reactive([
     ]
   }
 ])
+
 // basic computed properties
 const routineRecommendation = computed(() => {
-  return todos.length <= 1 ? 'Routine seems cool' : 'Routine needs optimization'
+  return routines.length <= 2 ? 'Routine seems cool' : 'Routine needs optimization'
 })
 
+function addRoutine(event) {
+  // `event` is the native DOM event
+    routines.push({
+      time: 'evening',
+      tasks: [
+        { title: 'Commit work done', duration: '10 mins' },
+        { title: 'Review work done', duration: '10 mins' },
+      ]
+    })
+  
+}
 </script>
 
 <template>
   <main>
-    <h1>My Todos</h1>
+    <h1>My routines</h1>
     <h3>{{ routineRecommendation }}</h3>
-    <li v-for="todo in todos" v-bind:key="todo">
-      {{ todo.time }}
-      <br />
-      
-      <!-- basic computation inside templates -->
-      Complexity: - {{ todo.tasks.length > 5 ? 'more' : 'less' }}
-      <br />
-      <hr />
-      <ol v-for="task in todo.tasks" v-bind:key="task">
-        [-]
-        {{
-          task.title
-        }}
-        -
-        {{
-          task.duration
-        }}
-      </ol>
-    </li>
+     <Routine v-for="routine in routines" :key="routine.time" :routine="routine" />
+
+    <button class="btn btn-primary" @click="addRoutine">Add routine</button>
   </main>
 </template>
