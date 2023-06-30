@@ -1,7 +1,7 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { reactive, computed } from 'vue'
 
-const todos = ref([
+const todos = reactive([
   {
     time: 'morning',
     tasks: [
@@ -25,14 +25,21 @@ const todos = ref([
     ]
   }
 ])
+// basic computed properties
+const routineRecommendation = computed(() => {
+  return todos.length <= 1 ? 'Routine seems cool' : 'Routine needs optimization'
+})
+
 </script>
 
 <template>
   <main>
     <h1>My Todos</h1>
+    <h3>{{ routineRecommendation }}</h3>
     <li v-for="todo in todos" v-bind:key="todo">
       {{ todo.time }}
       <br />
+      
       <!-- basic computation inside templates -->
       Complexity: - {{ todo.tasks.length > 5 ? 'more' : 'less' }}
       <br />
